@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../2023-2024/css+js/bootstrap.min.css">
+    <script src="../2023-2024/css+js/jquery-3.5.1.min.js"></script>
+    <style>
+        /* Estilo opcional si decides usar CSS personalizado */
+        #cantidad {
+            margin-right: 0; /* Asegúrate de que no haya margen a la derecha */
+            text-align: right; /* Alinea el texto a la derecha */
+        }
+        #formularioaa{
+            margin-top: 6em;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<img src="goia.png" class="w-100" alt="goia">
+<div class="container d-flex flex-column">
+    <div class="row"><img src="cookpad.png" id="cookpad" alt="cookpad"></div>
+    <br>
+    <div class="row"><h1>Bidaiatu munduan zehar sukaldatzen</h1></div>
+    <p>Italiako sukaldaritza pizza baino askoz gehiago da! Ikusi zer prestatzen ari den munduan zehar</p>
+    <div class="row"><h1>Zein herrialdeko errezetak ikusi nahi dituzu</h1></div>
+    <div class="row border border-warning h-100">
+
+            <div class="form-group-inline">
+                <label for="selektorea"></label>
+                <select class="form-select" id="selektorea">
+                    <option value="Aukeratu">Aukeratu</option>
+                    <option value="India">India</option>
+                    <option value="Mejico">Mejico</option>
+                    <option value="Italia">Italia</option>
+                </select>
+            </div>
+            <div id="botoiak" class="mt-5">
+                <button type="submit" id="erakutsi" class="btn btn-warning mx-2">Errezetak erakutsi</button>
+                <button type="button" id="berria" class="btn btn-warning mx-2">Errezeta berria</button>
+            </div>
+            <div id="formularioaa">
+                <form class="needs-validation" novalidate>
+                    <div class="form-group">
+                        <label for="inputIzena">Izena</label>
+                        <input type="text" class="form-control" id="inputIzena" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAzalpena">Azalpena</label>
+                        <input type="text" class="form-control" id="inputAzalpena" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputIrudia">Irudia</label>
+                        <input type="text" class="form-control" id="inputIrudia" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Baieztatu</button>
+                </form>
+            </div>
+
+
+        <div class="col-12 ml-3 mt-3 d-flex justify-content-center" id="imagenesContainer"></div>
+    </div>
+    <div class="row">
+        <div class="col-12 text-end">
+            <p id="cantidad"></p>
+        </div>
+    </div>
+</div>
+
+<script src="scripts.js"></script>
+</body>
+</html>

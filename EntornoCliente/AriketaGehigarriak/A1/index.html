@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css"><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Web aplikazioen garapena</h1>
+<h2>Formularioak</h2>
+<p>Gurekin kontaktatzeko formulario hau bete</p>
+<form id="formularioa">
+    <div>
+        <label for="izena">Izena</label>
+        <input type="text"  id="izena" placeholder="Erabiltzaile">
+    </div>
+    <div>
+        <label for="abizena">Abizenak</label>
+        <input type="text"  id="abizena" placeholder="Pasahitza">
+    </div>
+    <div>
+        <label><input type="checkbox" name="animales" value="Lehoia"> Lehoia</label>
+        <label><input type="checkbox" name="animales" value="Tigrea"> Tigrea</label>
+        <label><input type="checkbox" name="animales" value="Gepardoa"> Gepardoa</label>
+        <label><input type="checkbox" name="animales" value="Jaguarra"> Jaguarra</label>
+    </div>
+    <div>
+        <label for="email">Email</label>
+        <input type="text"  id="email" placeholder="Pasahitza">
+    </div>
+    <button onclick="bidali()">Baieztatu</button>
+</form>
+
+<script src="scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css+js/bootstrap.min.css">
+    <script src="css+js/jquery-3.5.1.min.js"></script>
+    <style>
+        button {
+            background-color: #c69500;
+        }
+    </style>
+</head>
+<body>
+<div class="container justify-content-center align-items-center">
+    <div class="row"><img class="img w-100 h-25" src="Irudiak/goia.png" alt="Imagen centrada"></div>
+    <div class="row justify-content-center align-items-center"><h1>Aukeratu erosi nahi duzun sushi mota</h1></div>
+    <div class="row bg-warning p-3">
+        <form class="form col-12" id="formularioa"> <!-- Cambiado a col-12 -->
+            <div class="form-group-inline">
+                <label for="selektorea" class="form-label">Bidalketa mota aukeratu </label>
+                <select class="form-select" id="selektorea">
+                    <option value="Aukeratu">Aukeratu</option>
+                    <option value="Gaur">Gaur</option>
+                    <option value="Beste egun batean">Beste egun batean</option>
+                </select>
+            </div>
+            <div id="botoiak" class="mt-5 d-flex"> <!-- Alineado a la derecha -->
+                <button type="submit" id="sushia">Sushia Erakutsi</button>
+                <button type="button" id="erosi">Erosi</button>
+            </div>
+            <div class="ml-3 mt-3 d-flex justify-content-center" id="imagenesContainer">
+            </div>
+        </form>
+        <div id="formularioaa">
+            <form class="form-inline" id="fomulario2">
+                <div class="form-group mx-sm-3">
+                    <label for="inputUser" class="sr-only">Erabiltzaile</label>
+                    <input type="text" class="form-control" id="inputUser" placeholder="Erabiltzaile"/>
+                </div>
+                <div class="form-group mx-sm-3">
+                    <label for="inputPass" class="sr-only">Pasahitza</label>
+                    <input type="password" class="form-control" id="inputPass" placeholder="Pasahitza"/>
+                </div>
+                <button type="submit" id="baieztatu">Baieztatu</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="scripts.js"></script>
+</body>
+</html>

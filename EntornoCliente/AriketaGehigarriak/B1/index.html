@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+
+    <style>
+        #kapaForm {
+            width:40%;
+            padding:5%;
+            border: 2px rgba(0, 0, 0, 0.363) solid;
+            margin: 5%;
+            float:left;
+        }
+        #kapaErrorea {
+            display:none;
+            width: 50%;
+            float:right;
+            margin-top: 5%;
+            background-color: yellow;
+            border: 2px solid brown;
+        }
+    </style>
+</head>
+<body>
+<div id="kapaForm">
+    <form onsubmit="return false">
+        <h3>Web aplikazioen garapena</h3>
+        <h4>Formularioak</h4>
+        <p>Gurekin kontaktatzeko formulario hau bete:</p>
+        <div class="form-group">
+            <div class="form-inline">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="trataera" id="gizona" value="1">
+                        Gizona
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="trataera" id="emakumea" value="2">
+                        Emakumea
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-inline">
+                <label class="col-form-label" for="izena">Izena</label>
+                <input type="text" class="form-control" id="izena" name="izena" placeholder="izena">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-inline">
+                <label class="col-form-label" for="abizena">Abizena</label>
+                <input type="text" class="form-control" id="abizena" name="abizena" placeholder="abizena">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class=form-inline>
+                <label class="col-form-label" for="helbidea">Helbidea</label>
+                <input type="text" class="form-control" id="helbidea" name="helbidea" placeholder="helbidea">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-inline">
+                <label for="herria">Herria</label>
+                <select class="form-control" id="herria">
+                    <option value="0">Aukeratu</option>
+                    <option value="1">Bilbao</option>
+                    <option value="2">Donosti</option>
+                    <option value="3">Gasteiz</option>
+                </select>
+            </div>
+        </div>
+        <p>Ikasketak</p>
+        <div class="form-group">
+            <div class="form-inline">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="dam" id="dam">
+                        DAM
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="daw" id="daw">
+                        DAW
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="smr" id="smr">
+                        SMR
+                    </label>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="BidaliDatuak()">Bidali</button>
+        <!--<button type="submit" class="btn btn-primary">Bidali</button>-->
+        <input class="btn btn-primary" type="reset" value="Reset">
+    </form>
+</div>
+<div id="kapaErrorea">
+    <h4>Oharra, zure datuak balidatuko dira:</h4>
+    <div id="datuak"></div>
+</div>
+
+<script>
+
+</script>
+<script type="text/javascript" src="scripts.js"></script>
+</body>
+</html>
