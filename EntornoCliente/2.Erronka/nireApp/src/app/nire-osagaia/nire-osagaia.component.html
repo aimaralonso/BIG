@@ -1,0 +1,17 @@
+<p>nire-osagaia works!</p>
+10 + 20 = {{ 10 + 20 }}
+<div>
+  <div>Izena: {{ langilea.izena }}</div>
+  <div>Abizena: {{ langilea.abizena }}</div>
+  <div>Generoa: {{ langilea.generoa }}</div>
+  <div>Izena: {{ langilea.irudia }}</div>
+</div>
+<div>        <img [src]="langilea.irudia">        <img src="{{langilea.irudia}}">    </div>
+<h2>{{ getTitle() }}</h2>
+<ul>
+    <li *ngFor="let langilea of langileak">
+        Izena: {{ langilea.izena }} Abizena: {{ langilea.abizena }} Generoa:
+        {{ langilea.generoa }} Soldata: {{ langilea.soldata }}
+      </li>
+</ul>
+
