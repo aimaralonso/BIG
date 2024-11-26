@@ -1,17 +1,82 @@
 <p>nire-osagaia works!</p>
 10 + 20 = {{ 10 + 20 }}
+
+<!-- Datos del langilea -->
 <div>
   <div>Izena: {{ langilea.izena }}</div>
   <div>Abizena: {{ langilea.abizena }}</div>
   <div>Generoa: {{ langilea.generoa }}</div>
   <div>Izena: {{ langilea.irudia }}</div>
+  <div>Likes: {{ langilea.likes }}</div>
+  <p [innerHTML]="myText"></p>
 </div>
-<div>        <img [src]="langilea.irudia">        <img src="{{langilea.irudia}}">    </div>
-<h2>{{ getTitle() }}</h2>
-<ul>
-    <li *ngFor="let langilea of langileak">
-        Izena: {{ langilea.izena }} Abizena: {{ langilea.abizena }} Generoa:
-        {{ langilea.generoa }} Soldata: {{ langilea.soldata }}
-      </li>
-</ul>
 
+<!-- Imágenes -->
+<div>
+  <img [src]="langilea.irudia" />
+  <!-- Usar enlace angular con corchetes para src -->
+  <img src="{{ langilea.irudia }}" />
+  <!-- Alternativa válida pero menos eficiente -->
+</div>
+
+<!-- Título -->
+<h2>{{ getTitle() }}</h2>
+
+<!-- Lista de langileak -->
+<ul>
+  <li *ngFor="let langilea of langileak">
+    Izena: {{ langilea.izena }} Abizena: {{ langilea.abizena }} Generoa:
+    {{ langilea.generoa }} Soldata: {{ langilea.soldata }}
+  </li>
+</ul>
+<input type="number" step="1" min="0" max="5" [(ngModel)]="rowLimit" />
+<!-- Tabla de langileak -->
+<table class="center">
+  <tbody>
+    <tr *ngFor="let langilea of langileak | slice : 0 : rowLimit">
+      <td>{{ langilea.izena | uppercase }}</td>
+      <td>{{ langilea.abizena | uppercase }}</td>
+      <td>{{ langilea.generoa | lowercase }}</td>
+      <td>
+        <span
+          class="badge"
+          [ngClass]="
+            langilea.soldata >= 1999
+              ? 'bg-info'
+              : langilea.soldata == 1000
+              ? 'bg-danger'
+              : 'bg-warning'
+          "
+        >
+          {{ langilea.soldata }}
+        </span>
+      </td>
+      <td>{{ langilea.likes }}</td>
+      <td>
+        <input
+          type="button"
+          value="Like"
+          (click)="gehituLikes(langilea)"
+          [disabled]="langilea.likes == 10"
+        />
+      </td>
+      <td>
+        <input type="button" value="Kontaktatu" [disabled]="!langilea.lanean" />
+      </td>
+    </tr>
+  </tbody>
+</table>
+<button
+  class="btn btn-info btn-sm"
+  [disabled]="rowStart <= 0"
+  (click)="kenduRow()"
+>
+  <i class="fa-regular fa-circle-left"></i></button
+>&nbsp;
+<button
+  class="btn btn-info btn-sm"
+  [disabled]="rowLimit >= langileak.length"
+  (click)="gehituRow()"
+>
+  <i class="fa-regular fa-circle-right"></i>
+</button>
