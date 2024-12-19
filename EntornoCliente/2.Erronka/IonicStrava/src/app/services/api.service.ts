@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Kluba } from '../classes/kluba';
-import { Jarduera } from '../classes/jarduera';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { SQLitePorter } from '@awesome-cordova-plugins/sqlite-porter/ngx';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { Jarduera } from '../classes/jarduera';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   private storage!: SQLiteObject;
   klubakList = new BehaviorSubject<Kluba[]>([]);
-  JarduerakList = new BehaviorSubject<Jarduera[]>([]);
   private isDbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
@@ -58,7 +58,9 @@ export class ApiService {
       let items: Kluba[] = [];
       console.log(res);
       if (res.rows.length > 0) {
-        for (var i = 0; i < res.rows.length; i++) {      
+        for (var i = 0; i < res.rows.length; i++) {
+          //jarduerak lortzen dira -> getJarduerak(id)
+          const jarduerak = await this.getJarduerak(res.rows.item(i).id) || [];       
           items.push({ 
             id: res.rows.item(i).id,
             name: res.rows.item(i).name,  
@@ -68,7 +70,7 @@ export class ApiService {
             member_count: res.rows.item(i).member_count,
             description: res.rows.item(i).description,
             club_type: res.rows.item(i).club_type,
-            jarduerak: []
+            jarduerak: jarduerak
            });
         }
       }
@@ -77,9 +79,37 @@ export class ApiService {
       console.error ("errorea getKlubak", error);
     }
   }
-   
+   // Klub bateko jarduerak lortzeko
+   async getJarduerak(id: any){
+    try {
+      const res = await this.storage.executeSql('SELECT j.id as id, j.name as name, j.distance as distance, j.moving_time as moving_time, j.elapsed_time as elapsed_time, j.type as type, j.workout_type as workout_type, j.atleta_id as atleta_id FROM jardueras as j, atletas as a WHERE j.atleta_id = a.id and a.kluba_id = ?', [id]);
+      let items: Jarduera[] = [];
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          items.push({ 
+                id: res.rows.item(i).id,
+                name: res.rows.item(i).name,
+                distance: res.rows.item(i).distance,
+                moving_time: res.rows.item(i).moving_time,
+                elapsed_time: res.rows.item(i).elapsed_time,
+                type: res.rows.item(i).type,
+                workout_type: res.rows.item(i).workout_type,
+                atleta_id: res.rows.item(i).atleta_id
+          });
+        }
+      }
+      return items;
+    } catch (error) {
+      console.error("errorea getJarduerak", error);
+      return [];
+    }
+  }
   //getKlubak() sortutako zerrenda bueltatzen du, tab1 orrian erabiltzen da
   fetchKlubak(): Observable<Kluba[]> {
     return this.klubakList.asObservable();
   }
-}
+  //getKluba() lortutako datuak bueltatzen ditu, tab1-jarduerak orrian erabiltzen da
+  fetchKluba(id: any): Observable<Kluba> {
+    const kluba = this.klubakList.value.find(kluba => kluba.id === id);
+    return of(kluba || {} as Kluba);
+  }
