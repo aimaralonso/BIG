@@ -66,7 +66,7 @@ export class ApiService {
             name: res.rows.item(i).name,  
             cover_photo_small: res.rows.item(i).cover_photo_small,
             sport_type: res.rows.item(i).sport_type,
-            privatea: res.rows.item(i).privatea,
+            private: res.rows.item(i).private,
             member_count: res.rows.item(i).member_count,
             description: res.rows.item(i).description,
             club_type: res.rows.item(i).club_type,
@@ -113,3 +113,11 @@ export class ApiService {
     const kluba = this.klubakList.value.find(kluba => kluba.id === id);
     return of(kluba || {} as Kluba);
   }
+  async addKluba(kluba: Kluba) {
+    let data = [kluba.name, kluba.cover_photo_small, kluba.sport_type, kluba.private, kluba.member_count, kluba.description, kluba.club_type];
+    alert(data);
+    const res = await this.storage.executeSql('INSERT INTO klubas (name, cover_photo_small, sport_type, private, member_count, description, club_type) VALUES (?, ?, ?, ?, ?, ?, ?)', data);
+
+    this.getKlubak();
+  }
+}
