@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Kluba } from '../classes/kluba';
 import { ApiService } from '../services/api.service';
-
+import { ToastController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 
 
@@ -12,7 +12,7 @@ import { NavController } from '@ionic/angular';
 })
 export class KlubaGehituPage {
 
-  constructor(private apiService: ApiService, private navCtrl: NavController) { }
+  constructor(private apiService: ApiService, private navCtrl: NavController, private toastController: ToastController) { }
 
   kluba = {} as Kluba;  
   errorMessage= '';
@@ -21,9 +21,11 @@ export class KlubaGehituPage {
     try {
       this.apiService.addKluba(this.kluba);
       this.reset();
+      this.showToast('Kluba gehitu da!');
       //Hasierako orrira bueltatu
       this.navCtrl.navigateForward('tabs/tab1');
     } catch (error) {
+      this.showToast('Errorea!');
       this.errorMessage = error as any;
     }
   }
@@ -39,5 +41,13 @@ export class KlubaGehituPage {
       club_type: '',
       jarduerak: []
     };
+  }
+  async showToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present();
   }
 }
