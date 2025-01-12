@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Kluba } from '../classes/kluba';
@@ -6,6 +7,11 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { SQLitePorter } from '@awesome-cordova-plugins/sqlite-porter/ngx';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Jarduera } from '../classes/jarduera';
+import { Transaction } from '../classes/transaction';
+import { NetworkService } from './network.service';
+import { SyncService } from './sync.service';
+import { TransactionService } from './transaction.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +20,17 @@ export class ApiService {
   private storage!: SQLiteObject;
   klubakList = new BehaviorSubject<Kluba[]>([]);
   private isDbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  //url nagusia, orain ip-a jarriko da bestela mobilaren localhost-arekin nahasketa sortzen da
+  private url = 'http://192.168.56.1:8000/api/klubak';
 
   constructor(
     private platform: Platform, 
     private sqlite: SQLite, 
     private httpClient: HttpClient,
     private sqlPorter: SQLitePorter,
+    private networkService: NetworkService,
+    private syncService: SyncService,
+    private transactionService: TransactionService
   ) {
     this.platform.ready().then(() => {
       this.sqlite.create({
@@ -45,6 +56,10 @@ export class ApiService {
     ).subscribe(data => {
       this.sqlPorter.importSqlToDb(this.storage, data)
         .then(_ => {
+          if (this.networkService.getStatus()){
+            //online gaude. Sinkronizatu
+            this.syncService.synchronize();
+          }
           this.getKlubak();
           this.isDbReady.next(true);
         })
@@ -113,11 +128,79 @@ export class ApiService {
     const kluba = this.klubakList.value.find(kluba => kluba.id === id);
     return of(kluba || {} as Kluba);
   }
+  // Add - Lerro berria gehitu, transakzio taulara pasatu eta sarea badugu sinkronizatzen saiatu.
   async addKluba(kluba: Kluba) {
     let data = [kluba.name, kluba.cover_photo_small, kluba.sport_type, kluba.private, kluba.member_count, kluba.description, kluba.club_type];
-    alert(data);
     const res = await this.storage.executeSql('INSERT INTO klubas (name, cover_photo_small, sport_type, private, member_count, description, club_type) VALUES (?, ?, ?, ?, ?, ?, ?)', data);
-
+    
+    let payload = {
+      name: kluba.name,
+      cover_photo_small: kluba.cover_photo_small,
+      sport_type: kluba.sport_type,
+      private: kluba.private,
+      member_count: kluba.member_count,
+      description: kluba.description,
+      club_type: kluba.club_type
+    };
+    const jsonString: string = JSON.stringify(payload);
+    let transaction: Transaction = {
+      endpoint : this.url,
+      method : "POST",
+      payload : jsonString,
+      };
+    this.addTransaction(transaction);
+    if (this.networkService.getStatus()){
+      //online gaude. Sinkronizatu
+      this.syncService.synchronize();
+    }
     this.getKlubak();
+  }
+  // Update - Eguneratu eta transakzio taulara pasatu
+  async updateKluba(id: any, kluba: Kluba) {
+    let data = [kluba.name, kluba.cover_photo_small, kluba.sport_type, kluba.private, kluba.member_count, kluba.description, kluba.club_type];
+    const res = await this.storage.executeSql(`UPDATE Klubas SET name = ?, cover_photo_small = ?. sport_type = ?, private = ?, member_count = ?, description = ?, club_type = ?  WHERE id = ${id}`, data);
+    
+    let payload = {
+      name: kluba.name,
+      cover_photo_small: kluba.cover_photo_small,
+      sport_type: kluba.sport_type,
+      private: kluba.private,
+      member_count: kluba.member_count,
+      description: kluba.description,
+      club_type: kluba.club_type
+    };
+    const jsonString: string = JSON.stringify(payload);
+    let transaction: Transaction = {
+      endpoint : this.url + '/' + id,
+      method : "PUT",
+      payload : jsonString,
+      };
+    this.addTransaction(transaction);
+    if (this.networkService.getStatus()){
+      //online gaude. Sinkronizatu
+      this.syncService.synchronize();
+    }
+    this.getKlubak();
+  }
+  // Delete - Ezabatu eta transakzio taulara pasatu
+  async deleteKluba(id: any) {
+    const _ = await this.storage.executeSql('DELETE FROM Klubas WHERE id = ?', [id]);
+
+    let transaction: Transaction = {
+      endpoint : this.url + '/' + id,
+      method : "DELETE",
+      payload : '',
+      };
+    this.addTransaction(transaction);
+    if (this.networkService.getStatus()){
+      //online gaude. Sinkronizatu
+      this.syncService.synchronize();
+    }
+    this.getKlubak();
+  }
+
+  //transakzio taulan gordetzeko
+  async addTransaction(transaction: Transaction) {
+    this.transactionService.addTransaction(transaction);
   }
 }
