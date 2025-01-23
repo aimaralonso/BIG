@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Kluba } from '../classes/kluba';
+import { Atleta } from '../classes/atleta';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { SQLitePorter } from '@awesome-cordova-plugins/sqlite-porter/ngx';
@@ -19,6 +20,7 @@ import { TransactionService } from './transaction.service';
 export class ApiService {
   private storage!: SQLiteObject;
   klubakList = new BehaviorSubject<Kluba[]>([]);
+  atletakList = new BehaviorSubject<Atleta[]>([]);
   private isDbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
   //url nagusia, orain ip-a jarriko da bestela mobilaren localhost-arekin nahasketa sortzen da
   private url = 'http://192.168.56.1:8000/api/klubak';
@@ -61,6 +63,7 @@ export class ApiService {
             this.syncService.synchronize();
           }
           this.getKlubak();
+          this.getAtletak();
           this.isDbReady.next(true);
         })
         .catch(error => console.error(error));
@@ -94,6 +97,28 @@ export class ApiService {
       console.error ("errorea getKlubak", error);
     }
   }
+  async getAtletak(){
+    try {
+      const res = await this.storage.executeSql('SELECT * FROM atletas', []);
+      let items: Atleta[] = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+
+ 
+          items.push({ 
+            id: res.rows.item(i).id,
+            firstname: res.rows.item(i).firstname,  
+            lastname: res.rows.item(i).lastname,
+            kluba_id: res.rows.item(i).kluba_id,
+           });
+        }
+      }
+      this.atletakList.next(items);
+    } catch (error) {
+      console.error ("errorea getAtletak", error);
+    }
+  }
    // Klub bateko jarduerak lortzeko
    async getJarduerak(id: any){
     try {
@@ -118,6 +143,9 @@ export class ApiService {
       console.error("errorea getJarduerak", error);
       return [];
     }
+  }
+  fetchAtletak(): Observable<Atleta[]> {
+    return this.atletakList.asObservable();
   }
   //getKlubak() sortutako zerrenda bueltatzen du, tab1 orrian erabiltzen da
   fetchKlubak(): Observable<Kluba[]> {

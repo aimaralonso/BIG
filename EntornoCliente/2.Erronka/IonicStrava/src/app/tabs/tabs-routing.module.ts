@@ -20,6 +20,10 @@ const routes: Routes = [
         loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
       },
       {
+        path: 'kluba/:id',
+        loadChildren: () => import('../tab1-jarduerak/tab1-jarduerak.module').then(m => m.Tab1JarduerakPageModule)
+      },
+      {
         path: 'tab1-jarduerak',
         loadChildren: () => import('../tab1-jarduerak/tab1-jarduerak.module').then(m => m.Tab1JarduerakPageModule)
       },

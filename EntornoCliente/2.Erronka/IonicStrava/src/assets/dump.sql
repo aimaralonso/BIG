@@ -14,13 +14,13 @@ INSERT or IGNORE INTO klubas(id, name, cover_photo_small, sport_type, private, m
 INSERT or IGNORE INTO klubas(id, name, cover_photo_small, sport_type, private, member_count, description, club_type) VALUES (4, 'uni eibar dam2', '../../assets/img/klubadam2.jpg', 'biking', false, 9, 'DAM 2. mailako ikasleak', 'company');
 CREATE TABLE IF NOT EXISTS atletas (
     id TEXT,
-    firtsname TEXT,
+    firstname TEXT,
     lastname TEXT,
     kluba_id NUMBER
 );
-INSERT or IGNORE INTO atletas (id, firtsname, lastname, kluba_id) VALUES
+INSERT or IGNORE INTO atletas (id, firstname, lastname, kluba_id) VALUES
 ('11111111A', 'izaskun', 'Kortabitarte', 1);
-INSERT or IGNORE INTO atletas (id, firtsname, lastname, kluba_id) VALUES
+INSERT or IGNORE INTO atletas (id, firstname, lastname, kluba_id) VALUES
 ('22222222B', 'pedro', 'perez', 1);
 
 CREATE TABLE IF NOT EXISTS jardueras (
